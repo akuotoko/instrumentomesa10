@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full bg-slate-50">
+<head>
+    
+<!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-EEEF5NNZ9S"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-EEEF5NNZ9S');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Caracterización Institucional y Técnica</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Configuración personalizada de Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        navy: {
+                            50: '#f0f4f8',
+                            100: '#d9e2ec',
+                            600: '#1e3a8a',
+                            800: '#1e293b',
+                            900: '#0f172a',
+                        },
+                        steel: {
+                            500: '#475569',
+                            600: '#334155',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Iconos y Fuentes -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Archivo CSS Independiente -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="h-full font-sans text-slate-800 antialiased flex flex-col">
+
+    <!-- Header Institucional -->
+    <header class="bg-slate-900 text-white border-b border-slate-700 sticky top-0 z-30 shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="bg-blue-600 text-white p-2 rounded-lg">
+                    <i class="fa-solid me-0 fa-server text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-lg font-bold leading-tight">Diagnostico y Caracterización de los Procesos de Control de Estudios, Tecnologías e Infraestructura</h1>
+                    <p class="text-xs text-slate-400">Levantamiento de Información Técnica e Institucional</p>
+                    <p class="text-xs text-slate-400">Documento base, es un borrador y aún no esta finalizado</p>
+                </div>
+            </div>
+            
+            <div class="hidden md:flex items-center space-x-4">
+                <button onclick="exportJSONData()" class="px-3 py-1.5 text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-200 rounded border border-slate-600 transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-download"></i> Exportar Borrador
+                </button>
+                <button id="saveDraftHeaderBtn" onclick="saveDraft(event)" class="px-3 py-1.5 text-xs font-medium bg-blue-700 hover:bg-blue-600 text-white rounded transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-floppy-disk"></i> Guardar Progreso
+                </button>
+            </div>
+        </div>
+        
+        <!-- Bar de Progreso Global -->
+        <div class="w-full bg-slate-800 h-1.5">
+            <div id="globalProgressBar" class="bg-blue-500 h-1.5 transition-all duration-300" style="width: 11%;"></div>
+        </div>
+    </header>
+
+    <!-- Contenido Principal -->
+    <div class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col md:flex-row gap-6">
+
+        <!-- Sidebar / Navegación por Módulos -->
+        <aside class="w-full md:w-80 shrink-0">
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 sticky top-20">
+                <div class="flex items-center justify-between mb-4 pb-2 border-b border-slate-100">
+                    <h2 class="text-xs font-bold uppercase tracking-wider text-slate-500">Módulos del Formulario</h2>
+                    <span id="progressText" class="text-xs font-semibold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full">1 de 9</span>
+                </div>
+
+                <!-- Lista de pestañas -->
+                <nav class="space-y-1 max-h-[calc(100vh-220px)] overflow-y-auto custom-scrollbar pr-1" id="moduleNav">
+                    <button onclick="switchModule(1)" id="nav-mod-1" class="w-full text-left p-2.5 rounded-lg border-l-4 border-blue-800 bg-slate-100 flex items-center justify-between group transition">
+                        <div class="flex items-center gap-2.5">
+                            <span class="w-6 h-6 rounded-full bg-blue-900 text-white text-xs font-bold flex items-center justify-center shrink-0">I</span>
+                            <span class="text-xs font-semibold text-slate-900 group-hover:text-blue-900">Identificación Institucional</span>
+                        </div>
+                        <i class="fa-solid fa-circle-check text-slate-300 text-xs status-icon"></i>
+                    </button>
+
+                    <button onclick="switchModule(2)" id="nav-mod-2" class="w-full text-left p-2.5 rounded-lg border-l-4 border-transparent hover:bg-slate-50 flex items-center justify-between group transition">
+                        <div class="flex items-center gap-2.5">
+                            <span class="w-6 h-6 rounded-full bg-slate-200 text-slate-700 text-xs font-bold flex items-center justify-center shrink-0">II</span>
+                            <span class="text-xs font-medium text-slate-700 group-hover:text-slate-900">Procesos Académicos</span>
+                        </div>
+                        <i class="fa-solid fa-circle-check text-slate-300 text-xs status-icon"></i>
+                    </button>
+
+                    <button onclick="switchModule(3)" id="nav-mod-3" class="w-full text-left p-2.5 rounded-lg border-l-4 border-transparent hover:bg-slate-50 flex items-center justify-between group transition">
+                        <div class="flex items-center gap-2.5">
+                            <span class="w-6 h-6 rounded-full bg-slate-200 text-slate-700 text-xs font-bold flex items-center justify-center shrink-0">III</span>
+                            <span class="text-xs font-medium text-slate-700 group-hover:text-slate-900">Personal y Presupuesto</span>
+                        </div>
+                        <i class="fa-solid fa-circle-check text-slate-300 text-xs status-icon"></i>
+                    </button>
+
+                    <button onclick="switchModule(4)" id="nav-mod-4" class="w-full text-left p-2.5 rounded-lg border-l-4 border-transparent hover:bg-slate-50 flex items-center justify-between group transition">
+                        <div class="flex items-center gap-2.5">
+                            <span class="w-6 h-6 rounded-full bg-slate-200 text-slate-700 text-xs font-bold flex items-center justify-center shrink-0">IV</span>
+                            <span class="text-xs font-medium text-slate-700 group-hover:text-slate-900">Aplicaciones y Licencias</span>
+                        </div>
+                        <i class="fa-solid fa-circle-check text-slate-300 text-xs status-icon"></i>
+                    </button>
+
+                    <button onclick="switchModule(5)" id="nav-mod-5" class="w-full text-left p-2.5 rounded-lg border-l-4 border-transparent hover:bg-slate-50 flex items-center justify-between group transition">
+                        <div class="flex items-center gap-2.5">
+                            <span class="w-6 h-6 rounded-full bg-slate-200 text-slate-700 text-xs font-bold flex items-center justify-center shrink-0">V</span>
+                            <span class="text-xs font-medium text-slate-700 group-hover:text-slate-900">Hospedaje y Redes</span>
+                        </div>
+                        <i class="fa-solid fa-circle-check text-slate-300 text-xs status-icon"></i>
+                    </button>
+
+                    <button onclick="switchModule(6)" id="nav-mod-6" class="w-full text-left p-2.5 rounded-lg border-l-4 border-transparent hover:bg-slate-50 flex items-center justify-between group transition">
+                        <div class="flex items-center gap-2.5">
+                            <span class="w-6 h-6 rounded-full bg-slate-200 text-slate-700 text-xs font-bold flex items-center justify-center shrink-0">VI</span>
+                            <span class="text-xs font-medium text-slate-700 group-hover:text-slate-900">Bases de Datos y Calidad</span>
+                        </div>
+                        <i class="fa-solid fa-circle-check text-slate-300 text-xs status-icon"></i>
+                    </button>
+
+                    <button onclick="switchModule(7)" id="nav-mod-7" class="w-full text-left p-2.5 rounded-lg border-l-4 border-transparent hover:bg-slate-50 flex items-center justify-between group transition">
+                        <div class="flex items-center gap-2.5">
+                            <span class="w-6 h-6 rounded-full bg-slate-200 text-slate-700 text-xs font-bold flex items-center justify-center shrink-0">VII</span>
+                            <span class="text-xs font-medium text-slate-700 group-hover:text-slate-900">Interoperabilidad y GTU</span>
+                        </div>
+                        <i class="fa-solid fa-circle-check text-slate-300 text-xs status-icon"></i>
+                    </button>
+
+                    <button onclick="switchModule(8)" id="nav-mod-8" class="w-full text-left p-2.5 rounded-lg border-l-4 border-transparent hover:bg-slate-50 flex items-center justify-between group transition">
+                        <div class="flex items-center gap-2.5">
+                            <span class="w-6 h-6 rounded-full bg-slate-200 text-slate-700 text-xs font-bold flex items-center justify-center shrink-0">VIII</span>
+                            <span class="text-xs font-medium text-slate-700 group-hover:text-slate-900">Seguridad y Auditoría</span>
+                        </div>
+                        <i class="fa-solid fa-circle-check text-slate-300 text-xs status-icon"></i>
+                    </button>
+
+                    <button onclick="switchModule(9)" id="nav-mod-9" class="w-full text-left p-2.5 rounded-lg border-l-4 border-transparent hover:bg-slate-50 flex items-center justify-between group transition">
+                        <div class="flex items-center gap-2.5">
+                            <span class="w-6 h-6 rounded-full bg-slate-200 text-slate-700 text-xs font-bold flex items-center justify-center shrink-0">IX</span>
+                            <span class="text-xs font-medium text-slate-700 group-hover:text-slate-900">Preparación para Migración</span>
+                        </div>
+                        <i class="fa-solid fa-circle-check text-slate-300 text-xs status-icon"></i>
+                    </button>
+                </nav>
+
+                <!-- Botones Móviles de Acción -->
+                <div class="mt-4 pt-3 border-t border-slate-100 flex md:hidden gap-2">
+                    <button onclick="saveDraft(event)" class="flex-1 py-2 text-xs font-medium bg-slate-800 text-white rounded text-center">Guardar</button>
+                    <button onclick="exportJSONData()" class="flex-1 py-2 text-xs font-medium bg-slate-200 text-slate-800 rounded text-center">Exportar</button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Formulario - Contenido Dinámico -->
+        <main class="flex-1 bg-white rounded-xl shadow-sm border border-slate-200 p-6 flex flex-col justify-between">
+            <form id="caracterizacionForm" onsubmit="return false;" class="space-y-6">
+
+                <!-- MÓDULO I -->
+                <div id="module-1" class="module-section space-y-6">
+                    <div class="border-b border-slate-200 pb-3">
+                        <h2 class="text-xl font-bold text-slate-900 flex items-center gap-2">
+                            <span class="bg-blue-900 text-white w-7 h-7 rounded-md inline-flex items-center justify-center text-sm">I</span>
+                            Módulo I. Identificación Institucional
+                        </h2>
+                        <p class="text-sm text-slate-500 mt-1">Datos generales del ente, responsable del reporte y del sistema caracterizado.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">IEU (Institución de Educación Universitaria) *</label>
+                            <input type="text" name="m1_ieu" required class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Nombre completo de la IEU">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Sede o Ámbito del Sistema *</label>
+                            <input type="text" name="m1_sede" required class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Ej: Sede Principal, Núcleo Central, General">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Dependencia Responsable *</label>
+                            <input type="text" name="m1_dependencia" required class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Ej: Dirección de Tecnología / Registro Académico">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Responsable Institucional *</label>
+                            <input type="text" name="m1_responsable" required class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Nombre y Apellido del responsable">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Contacto Institucional *</label>
+                            <input type="text" name="m1_contacto" required class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Correo electrónico / Teléfono de contacto">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Fecha de Corte *</label>
+                            <input type="date" name="m1_fecha_corte" required class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none">
+                        </div>
+
+                        <div class="md:col-span-2">
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">La Institución cuenta con un Sistema Único para todos los Procesos Académicos y Administartivos? *</label>
+
+                            <select name="m1_tiene_sistema" id="m1_tiene_sistema_select" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none">
+                                <option value="">Seleccione una opción</option>
+                                <option value="Si">Si (Para todos los procesos Académicos-Administrativos)</option>
+                                <option value="Parcial">Parcial (Solo para algunos procesos)</option>
+                                <option value="no">No (No cuenta con Sistemas de Información)</option>
+                            </select>
+                        </div>
+
+                        <!-- Campo condicional: solo visible cuando se elige "Parcial" -->
+                        <div id="m1_parcial_wrapper" class="md:col-span-2 hidden">
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Indique para cuáles procesos se cuenta con un Sistema Único:</label>
+                            <textarea name="m1_parcial" rows="2" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Procesos"></textarea>
+                        </div>
+
+                        <div class="md:col-span-2">
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Tipo de Institución de Educación Universitaria (IEU): *</label>
+
+                            <select name="m1_tipo_ieu" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none">
+                                <option value="">Seleccione una opción</option>
+                                <option value="EX">Universidad Experimental</option>
+                                <option value="NEX">Universidad No Experimental</option>
+                                <option value="UPT">Universidad Politécnica Territorial (UPT)</option>
+                                <option value="UE">Universidad Especializada</option>
+                                <option value="IU">Instituto Universitario</option>
+                                <option value="CU">Colegio Universitario</option>
+                                <option value="Otro">Otro</option>
+                            </select>
+                        </div>
+
+                        <div class="md:col-span-2">
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Tipo de Gestión: *</label>
+
+                            <select name="m1_tipo_gestion" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none">
+                                <option value="">Seleccione una opción</option>
+                                <option value="PU">Pública</option>
+                                <option value="PV">Privada</option>
+                            </select>
+                        </div>
+                            
+                        <div class="md:col-span-2">
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Tipo de Sede: *</label>
+
+                            <select name="m1_tipo_sede" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none">
+                                <option value="">Seleccione una opción</option>
+                                <option value="PPAL">Sede Principal</option>
+                                <option value="RG">Sede Regional</option>
+                                <option value="MP">Sede Municipal</option>
+                                <option value="NCL">Núcleo</option>
+                                <option value="EXT">Extensión</option>
+                                <option value="Otro">Otro</option>
+                            </select>
+                        </div>
+                            
+                        <div class="md:col-span-2">
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Fuente de los Datos</label>
+                            <textarea name="m1_fuente_dato" rows="2" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Describa el origen principal de la información registrada en el sistema (ej. Base de Datos Central, Hojas de cálculo, Expedientes físicos)"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MÓDULO II -->
+                <div id="module-2" class="module-section space-y-6 hidden">
+                    <div class="border-b border-slate-200 pb-3">
+                        <h2 class="text-xl font-bold text-slate-900 flex items-center gap-2">
+                            <span class="bg-blue-900 text-white w-7 h-7 rounded-md inline-flex items-center justify-center text-sm">II</span>
+                            Módulo II. Procesos Académicos y Control de Estudios
+                        </h2>
+                        <p class="text-sm text-slate-500 mt-1">Flujos relacionados a la gestión académica estudiantil.</p>
+                    </div>
+                    
+                    <!-- Seccion II.I -->
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">II.I - Gestión de Matrícula (Retiro, reincorporación, cambio de programa y/o sede)</label> 
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Unidades Responsables</label>
+                            <select name="m2_unidades_responsables_1" id="m2_unidades_responsables_1_select" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none">
+                                <option value="">Seleccione una opción</option>
+                                <option value="SECRETARÍA GENERAL">SECRETARÍA GENERAL</option>
+                                <option value="CONTROL DE ESTUDIOS">CONTROL DE ESTUDIOS</option>
+                                <option value="INGRESO, PROSECUCIÓN Y EGRESO ESTUDIANTIL">INGRESO, PROSECUCIÓN Y EGRESO ESTUDIANTIL</option>
+                                <option value="OTRO">OTRO</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Grado de Digitalización</label>
+                            <select name="m2_grado_digitalizacion" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none">
+                                <option value="">Seleccione una opción</option>
+                                <option value="Total">Total (100% Digital / Sin papel)</option>
+                                <option value="Parcial Alto">Parcial Alto (Principalmente digital con soporte físico)</option>
+                                <option value="Parcial Bajo">Parcial Bajo (Mayormente manual/físico)</option>
+                                <option value="Nulo/Manual">Nulo / Completamente Manual</option>
+                            </select>
+                        </div>
+
+                        <!-- Campo condicional: solo visible cuando se elige OTRO -->
+                        <div id="m2_unidades_otro_1_wrapper" class="md:col-span-2 hidden">
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Indique su denominación</label>
+                            <input type="text" name="m2_unidades_otro_1" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Indique la denominación de la unidad responsable">
+                        </div>
+
+                        <div class="md:col-span-2">
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Puntos de Captura y Validación</label>
+                            <textarea name="m2_puntos_captura" rows="2" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Especifique dónde y quién realiza la captura primaria de datos e ingresa las validaciones"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Seccion II.II -->
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">II.II - Proceso de Inscripción (Registro e inscripción por periodo académico)</label> 
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Unidades Responsables</label>
+                            <select name="m2_unidades_responsables_2" id="m2_unidades_responsables_2_select" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none">
+                                <option value="">Seleccione una opción</option>
+                                <option value="SECRETARÍA GENERAL">SECRETARÍA GENERAL</option>
+                                <option value="CONTROL DE ESTUDIOS">CONTROL DE ESTUDIOS</option>
+                                <option value="INGRESO, PROSECUCIÓN Y EGRESO ESTUDIANTIL">INGRESO, PROSECUCIÓN Y EGRESO ESTUDIANTIL</option>
+                                <option value="OTRO">OTRO</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Grado de Digitalización</label>
+                            <select name="m2_grado_digitalizacion" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none">
+                                <option value="">Seleccione una opción</option>
+                                <option value="Total">Total (100% Digital / Sin papel)</option>
+                                <option value="Parcial Alto">Parcial Alto (Principalmente digital con soporte físico)</option>
+                                <option value="Parcial Bajo">Parcial Bajo (Mayormente manual/físico)</option>
+                                <option value="Nulo/Manual">Nulo / Completamente Manual</option>
+                            </select>
+                        </div>
+
+                        <div id="m2_unidades_otro_2_wrapper" class="md:col-span-2 hidden">
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Indique su denominación</label>
+                            <input type="text" name="m2_unidades_otro_2" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Indique la denominación de la unidad responsable">
+                        </div>
+
+                        <div class="md:col-span-2">
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Puntos de Captura y Validación</label>
+                            <textarea name="m2_puntos_captura" rows="2" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Especifique dónde y quién realiza la captura primaria de datos e ingresa las validaciones"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Seccion II.III -->
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">II.III - Prosecusión (Seguimiento a la trayectoria académica del estudiante)</label> 
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Unidades Responsables</label>
+                            <select name="m2_unidades_responsables_3" id="m2_unidades_responsables_3_select" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none">
+                                <option value="">Seleccione una opción</option>
+                                <option value="SECRETARÍA GENERAL">SECRETARÍA GENERAL</option>
+                                <option value="CONTROL DE ESTUDIOS">CONTROL DE ESTUDIOS</option>
+                                <option value="INGRESO, PROSECUCIÓN Y EGRESO ESTUDIANTIL">INGRESO, PROSECUCIÓN Y EGRESO ESTUDIANTIL</option>
+                                <option value="OTRO">OTRO</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Grado de Digitalización</label>
+                            <select name="m2_grado_digitalizacion" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none">
+                                <option value="">Seleccione una opción</option>
+                                <option value="Total">Total (100% Digital / Sin papel)</option>
+                                <option value="Parcial Alto">Parcial Alto (Principalmente digital con soporte físico)</option>
+                                <option value="Parcial Bajo">Parcial Bajo (Mayormente manual/físico)</option>
+                                <option value="Nulo/Manual">Nulo / Completamente Manual</option>
+                            </select>
+                        </div>
+
+                        <div id="m2_unidades_otro_3_wrapper" class="md:col-span-2 hidden">
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Indique su denominación</label>
+                            <input type="text" name="m2_unidades_otro_3" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Indique la denominación de la unidad responsable">
+                        </div>
+
+                        <div class="md:col-span-2">
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Puntos de Captura y Validación</label>
+                            <textarea name="m2_puntos_captura" rows="2" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Especifique dónde y quién realiza la captura primaria de datos e ingresa las validaciones"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Seccion II.IV -->
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">II.IV - Carga y Validación de Notas (Por parte del docente)</label> 
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Unidades Responsables</label>
+                            <select name="m2_unidades_responsables_4" id="m2_unidades_responsables_4_select" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none">
+                                <option value="">Seleccione una opción</option>
+                                <option value="SECRETARÍA GENERAL">SECRETARÍA GENERAL</option>
+                                <option value="CONTROL DE ESTUDIOS">CONTROL DE ESTUDIOS</option>
+                                <option value="INGRESO, PROSECUCIÓN Y EGRESO ESTUDIANTIL">INGRESO, PROSECUCIÓN Y EGRESO ESTUDIANTIL</option>
+                                <option value="OTRO">OTRO</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Grado de Digitalización</label>
+                            <select name="m2_grado_digitalizacion" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none">
+                                <option value="">Seleccione una opción</option>
+                                <option value="Total">Total (100% Digital / Sin papel)</option>
+                                <option value="Parcial Alto">Parcial Alto (Principalmente digital con soporte físico)</option>
+                                <option value="Parcial Bajo">Parcial Bajo (Mayormente manual/físico)</option>
+                                <option value="Nulo/Manual">Nulo / Completamente Manual</option>
+                            </select>
+                        </div>
+
+                        <div id="m2_unidades_otro_4_wrapper" class="md:col-span-2 hidden">
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Indique su denominación</label>
+                            <input type="text" name="m2_unidades_otro_4" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Indique la denominación de la unidad responsable">
+                        </div>
+
+                        <div class="md:col-span-2">
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Puntos de Captura y Validación</label>
+                            <textarea name="m2_puntos_captura" rows="2" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Especifique dónde y quién realiza la captura primaria de datos e ingresa las validaciones"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Seccion II.V -->
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">II.V - Planificación Académica (Oferta académica, Cuadratura)</label> 
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Unidades Responsables</label>
+                            <select name="m2_unidades_responsables_5" id="m2_unidades_responsables_5_select" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none">
+                                <option value="">Seleccione una opción</option>
+                                <option value="SECRETARÍA GENERAL">SECRETARÍA GENERAL</option>
+                                <option value="CONTROL DE ESTUDIOS">CONTROL DE ESTUDIOS</option>
+                                <option value="INGRESO, PROSECUCIÓN Y EGRESO ESTUDIANTIL">INGRESO, PROSECUCIÓN Y EGRESO ESTUDIANTIL</option>
+                                <option value="OTRO">OTRO</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Grado de Digitalización</label>
+                            <select name="m2_grado_digitalizacion" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none">
+                                <option value="">Seleccione una opción</option>
+                                <option value="Total">Total (100% Digital / Sin papel)</option>
+                                <option value="Parcial Alto">Parcial Alto (Principalmente digital con soporte físico)</option>
+                                <option value="Parcial Bajo">Parcial Bajo (Mayormente manual/físico)</option>
+                                <option value="Nulo/Manual">Nulo / Completamente Manual</option>
+                            </select>
+                        </div>
+
+                        <div id="m2_unidades_otro_5_wrapper" class="md:col-span-2 hidden">
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Indique su denominación</label>
+                            <input type="text" name="m2_unidades_otro_5" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Indique la denominación de la unidad responsable">
+                        </div>
+
+                        <div class="md:col-span-2">
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Puntos de Captura y Validación</label>
+                            <textarea name="m2_puntos_captura" rows="2" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Especifique dónde y quién realiza la captura primaria de datos e ingresa las validaciones"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Seccion II.VI -->
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">II.VI - Registros de Egresados (Libro de Acta de Grado)</label> 
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Unidades Responsables</label>
+                            <select name="m2_unidades_responsables_6" id="m2_unidades_responsables_6_select" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none">
+                                <option value="">Seleccione una opción</option>
+                                <option value="SECRETARÍA GENERAL">SECRETARÍA GENERAL</option>
+                                <option value="CONTROL DE ESTUDIOS">CONTROL DE ESTUDIOS</option>
+                                <option value="INGRESO, PROSECUCIÓN Y EGRESO ESTUDIANTIL">INGRESO, PROSECUCIÓN Y EGRESO ESTUDIANTIL</option>
+                                <option value="OTRO">OTRO</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Grado de Digitalización</label>
+                            <select name="m2_grado_digitalizacion" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none">
+                                <option value="">Seleccione una opción</option>
+                                <option value="Total">Total (100% Digital / Sin papel)</option>
+                                <option value="Parcial Alto">Parcial Alto (Principalmente digital con soporte físico)</option>
+                                <option value="Parcial Bajo">Parcial Bajo (Mayormente manual/físico)</option>
+                                <option value="Nulo/Manual">Nulo / Completamente Manual</option>
+                            </select>
+                        </div>
+
+                        <div id="m2_unidades_otro_6_wrapper" class="md:col-span-2 hidden">
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Indique su denominación</label>
+                            <input type="text" name="m2_unidades_otro_6" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Indique la denominación de la unidad responsable">
+                        </div>
+
+                        <div class="md:col-span-2">
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Puntos de Captura y Validación</label>
+                            <textarea name="m2_puntos_captura" rows="2" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Especifique dónde y quién realiza la captura primaria de datos e ingresa las validaciones"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Seccion II.VII -->
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">II.VII - Emisión de Constancias y Certificaciones</label> 
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Unidades Responsables</label>
+                            <select name="m2_unidades_responsables_7" id="m2_unidades_responsables_7_select" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none">
+                                <option value="">Seleccione una opción</option>
+                                <option value="SECRETARÍA GENERAL">SECRETARÍA GENERAL</option>
+                                <option value="CONTROL DE ESTUDIOS">CONTROL DE ESTUDIOS</option>
+                                <option value="INGRESO, PROSECUCIÓN Y EGRESO ESTUDIANTIL">INGRESO, PROSECUCIÓN Y EGRESO ESTUDIANTIL</option>
+                                <option value="OTRO">OTRO</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Grado de Digitalización</label>
+                            <select name="m2_grado_digitalizacion" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none">
+                                <option value="">Seleccione una opción</option>
+                                <option value="Total">Total (100% Digital / Sin papel)</option>
+                                <option value="Parcial Alto">Parcial Alto (Principalmente digital con soporte físico)</option>
+                                <option value="Parcial Bajo">Parcial Bajo (Mayormente manual/físico)</option>
+                                <option value="Nulo/Manual">Nulo / Completamente Manual</option>
+                            </select>
+                        </div>
+
+                        <div id="m2_unidades_otro_7_wrapper" class="md:col-span-2 hidden">
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Indique su denominación</label>
+                            <input type="text" name="m2_unidades_otro_7" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Indique la denominación de la unidad responsable">
+                        </div>
+
+                        <div class="md:col-span-2">
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Puntos de Captura y Validación</label>
+                            <textarea name="m2_puntos_captura" rows="2" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Especifique dónde y quién realiza la captura primaria de datos e ingresa las validaciones"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MÓDULO III -->
+                <div id="module-3" class="module-section space-y-6 hidden">
+                    <div class="border-b border-slate-200 pb-3">
+                        <h2 class="text-xl font-bold text-slate-900 flex items-center gap-2">
+                            <span class="bg-blue-900 text-white w-7 h-7 rounded-md inline-flex items-center justify-center text-sm">III</span>
+                            Módulo III. Personal, Carga Docente y Asignación Presupuestaria
+                        </h2>
+                        <p class="text-sm text-slate-500 mt-1">Gestión del talento humano, personal docente y su correspondencia financiera.</p>
+                    </div>
+
+                    <!-- Nota Aclaratoria Requerida -->
+                    <div class="bg-amber-50 border-l-4 border-amber-500 p-3 rounded-r-lg">
+                        <div class="flex items-start">
+                            <i class="fa-solid fa-circle-info text-amber-600 mt-0.5 mr-2 text-sm"></i>
+                            <p class="text-xs text-amber-800">
+                                <strong>Nota institucional:</strong> No se solicitarán montos individuales salvo requerimiento formal indispensable y autorizado.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="md:col-span-2">
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Sistemas o Módulos que Registran Personal</label>
+                            <input type="text" name="m3_sistemas_personal" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Nombre de los sistemas o subsistemas de RRHH / Personal">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Relación con Carga Docente</label>
+                            <select name="m3_relacion_carga_docente" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none">
+                                <option value="">Seleccione estado</option>
+                                <option value="Integrado">Totalmente Integrado con el Sistema Académico</option>
+                                <option value="Vinculado Parcial">Vinculación Parcial / Manual</option>
+                                <option value="Independiente">Independiente / Sin vinculación</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Existencia de Identificadores de Trabajador</label>
+                            <select name="m3_identificadores_trabajador" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none">
+                                <option value="">Seleccione opción</option>
+                                <option value="Sí - Único Institucional">Sí (Código / Expediente Único Institucional)</option>
+                                <option value="Sí - Solo Cédula/ID">Sí (Únicamente Documento de Identidad)</option>
+                                <option value="No">No se manejan identificadores estandarizados</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Fuentes de Nómina</label>
+                            <input type="text" name="m3_fuentes_nomina" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Sistema/Software de aplicación de Nómina">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Intercambio con Planificación o Presupuesto</label>
+                            <input type="text" name="m3_intercambio_presupuesto" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Mecanismo o frecuencia de envío de datos a Presupuesto">
+                        </div>
+
+                        <div class="md:col-span-2">
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Mecanismos de Conciliación</label>
+                            <textarea name="m3_mecanismos_conciliacion" rows="2" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Describa cómo concilian las horas docentes planificadas vs. ejecutadas y pagadas"></textarea>
+                        </div>
+
+                        <div class="md:col-span-2">
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Restricciones de Acceso</label>
+                            <input type="text" name="m3_restricciones_acceso" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Niveles de confidencialidad y restricciones normativas aplicables">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MÓDULO IV -->
+                <div id="module-4" class="module-section space-y-6 hidden">
+                    <div class="border-b border-slate-200 pb-3">
+                        <h2 class="text-xl font-bold text-slate-900 flex items-center gap-2">
+                            <span class="bg-blue-900 text-white w-7 h-7 rounded-md inline-flex items-center justify-center text-sm">IV</span>
+                            Módulo IV. Aplicaciones, Licenciamientos y Sistemas Operativos
+                        </h2>
+                        <p class="text-sm text-slate-500 mt-1">Ficha técnica del software, ambiente operativo y estado legal/contractual.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Nombre Funcional del Sistema *</label>
+                            <input type="text" name="m4_nombre_sistema" required class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Ej: SIGA, SAU, Moodle Institucional">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Condición de Desarrollo</label>
+                            <select name="m4_condicion_desarrollo" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none">
+                                <option value="">Seleccione origen</option>
+                                <option value="Propio (In-House)">Desarrollo Propio (In-House)</option>
+                                <option value="Terceros / Comercial">Terceros / Software Comercial</option>
+                                <option value="Software Libre / Open Source">Software Libre / Open Source Personalizado</option>
+                                <option value="Cooperación Interinstitucional">Convenio / Cooperación Interinstitucional</option>
+                            </select>
+                        </div>
+
+                        <div class="md:col-span-2">
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Propósito Principal</label>
+                            <textarea name="m4_proposito" rows="2" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Descripción breve del objetivo de la aplicación"></textarea>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Modalidad de Licenciamiento</label>
+                            <input type="text" name="m4_modalidad_licencia" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Ej: GPL, Propietaria, SaaS, Por Usuario">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Sistema Operativo Requerido / Base</label>
+                            <input type="text" name="m4_sistema_operativo" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Ej: Ubuntu Server 22.04, Windows Server 2019, Debian">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Dependencia Administradora</label>
+                            <input type="text" name="m4_dependencia_administradora" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Unidad a cargo del mantenimiento funcional">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Soporte Disponible</label>
+                            <select name="m4_soporte_disponible" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none">
+                                <option value="">Seleccione opción</option>
+                                <option value="Interno Dedicado">Equipo Interno Dedicado</option>
+                                <option value="Interno Ad-hoc">Personal Interno (No dedicado exclusivo)</option>
+                                <option value="Proveedor Externo">Proveedor Externo bajo Contrato</option>
+                                <option value="Sin Soporte">Sin Soporte Técnico Actual</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Situación Contractual (si aplica)</label>
+                            <input type="text" name="m4_situacion_contractual" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Ej: Contrato Vigente hasta Dic 2026 / Licencia Perpetua">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Documentación Técnica Existente</label>
+                            <select name="m4_documentacion_tecnica" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none">
+                                <option value="">Seleccione nivel</option>
+                                <option value="Completa">Completa (Manuales, Diagramas, Diccionario)</option>
+                                <option value="Parcial">Parcial (Manuales de Usuario únicamente)</option>
+                                <option value="Escasa">Escasa / Incompleta</option>
+                                <option value="Inexistente">Inexistente</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MÓDULO V -->
+                <div id="module-5" class="module-section space-y-6 hidden">
+                    <div class="border-b border-slate-200 pb-3">
+                        <h2 class="text-xl font-bold text-slate-900 flex items-center gap-2">
+                            <span class="bg-blue-900 text-white w-7 h-7 rounded-md inline-flex items-center justify-center text-sm">V</span>
+                            Módulo V. Infraestructura de Hospedaje y Redes
+                        </h2>
+                        <p class="text-sm text-slate-500 mt-1">Ubicación de hardware, centros de datos y enlaces de conectividad.</p>
+                    </div>
+
+                    <!-- Nota Aclaratoria Requerida -->
+                    <div class="bg-amber-50 border-l-4 border-amber-500 p-3 rounded-r-lg">
+                        <div class="flex items-start">
+                            <i class="fa-solid fa-shield-halved text-amber-600 mt-0.5 mr-2 text-sm"></i>
+                            <p class="text-xs text-amber-800">
+                                <strong>Nota de Seguridad:</strong> No se solicitarán direcciones IP internas sensibles o claves de red si no resultan indispensables.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Ubicación General de Hospedaje</label>
+                            <select name="m5_ubicacion_hospedaje" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none">
+                                <option value="">Seleccione ubicación</option>
+                                <option value="On-Premise (Servidores Propios)">On-Premise (Data Center Propio)</option>
+                                <option value="Nube Pública">Nube Pública (AWS, Azure, GCP, etc.)</option>
+                                <option value="Nube Privada / Co-location">Nube Privada / Co-location Externo</option>
+                                <option value="Híbrido">Esquema Híbrido</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Condición Geográfica</label>
+                            <select name="m5_condicion_nacional" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none">
+                                <option value="">Seleccione condición</option>
+                                <option value="Infraestructura Nacional">Infraestructura Nacional (En el país)</option>
+                                <option value="Infraestructura Extranjera">Infraestructura Extranjera (Fuera del país)</option>
+                                <option value="Mixta">Mixta</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Servidores Físicos o Virtuales</label>
+                            <input type="text" name="m5_servidores_tipo" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Ej: 2 VMs VMware / 1 Servidor Físico Bare-Metal">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Capacidad de Almacenamiento</label>
+                            <input type="text" name="m5_almacenamiento" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Ej: 2 TB SSD RAID 10 / 500 GB en SAN">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Estrategia de Respaldo (Backup)</label>
+                            <input type="text" name="m5_respaldo" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Ej: Diario local, Semanal off-site">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Centros de Datos Asociados</label>
+                            <input type="text" name="m5_centros_datos" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Nombre/Denominación del Data Center">
+                        </div>
+
+                        <div class="md:col-span-2">
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Conectividad entre Sedes y Arquitectura General de Red</label>
+                            <textarea name="m5_conectividad_arquitectura" rows="2" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Describa el tipo de enlaces (Fibra, VPN, Microondas) y esquema general del segmento de red"></textarea>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Dependencias Críticas de Infraestructura</label>
+                            <input type="text" name="m5_dependencias_criticas" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Ej: Planta eléctrica, DNS Central, Firewall corporativo">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Inventario de Activos Relevante</label>
+                            <input type="text" name="m5_inventario_activos" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Código / ID de inventario de equipos principales">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MÓDULO VI -->
+                <div id="module-6" class="module-section space-y-6 hidden">
+                    <div class="border-b border-slate-200 pb-3">
+                        <h2 class="text-xl font-bold text-slate-900 flex items-center gap-2">
+                            <span class="bg-blue-900 text-white w-7 h-7 rounded-md inline-flex items-center justify-center text-sm">VI</span>
+                            Módulo VI. Bases de Datos y Calidad de Información
+                        </h2>
+                        <p class="text-sm text-slate-500 mt-1">Motor de datos, integridad, catalogación y consistencia.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Motores o Tecnologías Utilizadas *</label>
+                            <input type="text" name="m6_motores_bd" required class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Ej: PostgreSQL 14, Oracle 19c, MySQL 8.0, MongoDB">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Frecuencia de Actualización</label>
+                            <select name="m6_frecuencia_actualizacion" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none">
+                                <option value="">Seleccione frecuencia</option>
+                                <option value="Tiempo Real / Transaccional">En Tiempo Real / Transaccional</option>
+                                <option value="Diaria">Diaria</option>
+                                <option value="Semanal / Mensual">Semanal / Mensual</option>
+                                <option value="Por Evento / Lotes">Por Evento / Lotes específicos</option>
+                            </select>
+                        </div>
+
+                        <div class="md:col-span-2">
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Dominios de Datos Principales</label>
+                            <input type="text" name="m6_dominios_datos" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Ej: Estudiantes, Calificaciones, Docentes, Facturación, Inventarios">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Identificadores Principales (Primary Keys)</label>
+                            <input type="text" name="m6_identificadores_pk" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Ej: Cédula, Expediente, UUID, ID Autoincremental">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Existencia de Diccionario de Datos</label>
+                            <select name="m6_diccionario_datos" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none">
+                                <option value="">Seleccione opción</option>
+                                <option value="Sí - Actualizado">Sí, formal y actualizado</option>
+                                <option value="Sí - Desactualizado">Sí, pero desactualizado</option>
+                                <option value="No">No posee diccionario de datos</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Duplicidades Conocidas</label>
+                            <input type="text" name="m6_duplicidades" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Indique si existen registros duplicados recurrentes">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Campos Obligatorios de Control</label>
+                            <input type="text" name="m6_campos_obligatorios" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Ej: Nombres, Cédula, Correo Institucional">
+                        </div>
+
+                        <div class="md:col-span-2">
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Catálogos Maestros Utilizados</label>
+                            <input type="text" name="m6_catalogos_maestros" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Ej: Tabla maestra de Carreras, Municipios, Facultades, Materias">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Procedimientos de Depuración</label>
+                            <input type="text" name="m6_procedimientos_depuracion" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Frecuencia o scripts de limpieza de datos de prueba/inconsistentes">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Capacidad de Exportación e Importación</label>
+                            <input type="text" name="m6_capacidad_export_import" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Soporta CSV, SQL Dumps, JSON, XML, Excel">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MÓDULO VII -->
+                <div id="module-7" class="module-section space-y-6 hidden">
+                    <div class="border-b border-slate-200 pb-3">
+                        <h2 class="text-xl font-bold text-slate-900 flex items-center gap-2">
+                            <span class="bg-blue-900 text-white w-7 h-7 rounded-md inline-flex items-center justify-center text-sm">VII</span>
+                            Módulo VII. Interoperabilidad y GTU
+                        </h2>
+                        <p class="text-sm text-slate-500 mt-1">Intercambio de datos, APIs, integración central e interfaz GTU.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="md:col-span-2">
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Sistemas que Intercambian Información</label>
+                            <input type="text" name="m7_sistemas_intercambio" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Sistemas internos o externos con los que comparte datos">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Mecanismos Actuales de Intercambio</label>
+                            <select name="m7_mecanismos_intercambio" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none">
+                                <option value="">Seleccione mecanismo</option>
+                                <option value="API REST / Web Services">API REST / Web Services JSON/XML</option>
+                                <option value="Archivos Planos / Excel">Archivos Planos / Excel / CSV manuales</option>
+                                <option value="Conexión Directa a BD">Conexión Directa a Base de Datos</option>
+                                <option value="Proceso Manual / Copia de texto">Proceso Manual / Copia de texto</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Periodicidad y Formatos</label>
+                            <input type="text" name="m7_periodicidad_formatos" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Ej: Diaria (JSON), Mensual (Excel)">
+                        </div>
+
+                        <div class="md:col-span-2">
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Datos Requeridos por GTU (Gestión de Trámites Universitarios)</label>
+                            <textarea name="m7_datos_gtu" rows="2" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Especifique los campos o certificaciones necesarios para la validación GTU"></textarea>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Validaciones en Intercambio</label>
+                            <input type="text" name="m7_validaciones" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Mecanismos de verificación (Tokens, Firma digital, Checksum)">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Dependencias Manuales</label>
+                            <input type="text" name="m7_dependencias_manuales" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Pases de datos requeridos por intervención humana">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Puntos de Doble Captura</label>
+                            <input type="text" name="m7_doble_captura" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Lugares donde se reescribe información ya existente">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Incidencias Conocidas</label>
+                            <input type="text" name="m7_incidencias" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Errores comunes de sincronización o incompatibilidades">
+                        </div>
+
+                        <div class="md:col-span-2">
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Necesidades de Integración Prioritarias</label>
+                            <textarea name="m7_necesidades_integracion" rows="2" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Describa requerimientos urgentes para interconectar este sistema"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MÓDULO VIII -->
+                <div id="module-8" class="module-section space-y-6 hidden">
+                    <div class="border-b border-slate-200 pb-3">
+                        <h2 class="text-xl font-bold text-slate-900 flex items-center gap-2">
+                            <span class="bg-blue-900 text-white w-7 h-7 rounded-md inline-flex items-center justify-center text-sm">VIII</span>
+                            Módulo VIII. Seguridad, Continuidad y Auditoría
+                        </h2>
+                        <p class="text-sm text-slate-500 mt-1">Políticas de acceso, trazabilidad, resguardo de información y contingencia.</p>
+                    </div>
+
+                    <!-- Nota Aclaratoria Requerida -->
+                    <div class="bg-amber-50 border-l-4 border-amber-500 p-3 rounded-r-lg">
+                        <div class="flex items-start">
+                            <i class="fa-solid fa-user-lock text-amber-600 mt-0.5 mr-2 text-sm"></i>
+                            <p class="text-xs text-amber-800">
+                                <strong>Mesa Restringida:</strong> Los detalles operativos sensibles se validarán en mesa restringida cuando corresponda.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Gestión de Usuarios</label>
+                            <select name="m8_gestion_usuarios" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none">
+                                <option value="">Seleccione tipo</option>
+                                <option value="Centralizada (LDAP / Active Directory)">Centralizada (LDAP / Active Directory / SSO)</option>
+                                <option value="Local (En la propia aplicación)">Local (En la propia aplicación)</option>
+                                <option value="Mixta">Mixta</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Perfiles y Roles Matriz</label>
+                            <input type="text" name="m8_perfiles_roles" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Ej: Admin, Estudiante, Profesor, Validador, Consulta">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Cifrado Declarado</label>
+                            <select name="m8_cifrado" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none">
+                                <option value="">Seleccione nivel</option>
+                                <option value="En Tránsito y Reposo (HTTPS/TLS + AES)">En Tránsito y Reposo (HTTPS/TLS + AES)</option>
+                                <option value="Solo en Tránsito (HTTPS)">Solo en Tránsito (HTTPS/TLS)</option>
+                                <option value="Sin Cifrado Declarado">Sin Cifrado Declarado</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Registro de Actividad (Audit Logs / Bitácora)</label>
+                            <select name="m8_registro_actividad" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none">
+                                <option value="">Seleccione opción</option>
+                                <option value="Completo (Log de Transacciones + Accesos)">Completo (Transacciones y Accesos)</option>
+                                <option value="Básico (Solo Inicio de Sesión)">Básico (Solo Inicios de Sesión)</option>
+                                <option value="Inexistente">Inexistente</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Gestión de Incidentes de Seguridad</label>
+                            <input type="text" name="m8_gestion_incidentes" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Protocolo o equipo asignado ante eventos de seguridad">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Plan de Recuperación Ante Fallas (DRP)</label>
+                            <select name="m8_recuperacion_fallas" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none">
+                                <option value="">Seleccione estado</option>
+                                <option value="Documentado y Probado">Documentado y Probado periódicamente</option>
+                                <option value="Documentado sin Probar">Documentado sin pruebas recientes</option>
+                                <option value="Informal / Inexistente">Informal / Inexistente</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Actualización y Mantenimiento</label>
+                            <input type="text" name="m8_actualizacion_mantenimiento" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Frecuencia de parches y ventanas de mantenimiento">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Segregación de Funciones</label>
+                            <input type="text" name="m8_segregacion_funciones" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Separación de roles desarrollador / operador / administrador">
+                        </div>
+
+                        <div class="md:col-span-2">
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Existencia de Políticas Internas de TI/Seguridad</label>
+                            <input type="text" name="m8_politicas_internas" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Normativas, reglamentos o manuales de seguridad aprobados">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MÓDULO IX -->
+                <div id="module-9" class="module-section space-y-6 hidden">
+                    <div class="border-b border-slate-200 pb-3">
+                        <h2 class="text-xl font-bold text-slate-900 flex items-center gap-2">
+                            <span class="bg-blue-900 text-white w-7 h-7 rounded-md inline-flex items-center justify-center text-sm">IX</span>
+                            Módulo IX. Preparación para Migración
+                        </h2>
+                        <p class="text-sm text-slate-500 mt-1">Evaluación de factibilidad, volumetría y esfuerzo técnico para migración.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Volumen Estimado por Dominio</label>
+                            <input type="text" name="m9_volumen_estimado" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Ej: 50.000 estudiantes, 1.2 Millones de notas">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Formatos de Origen</label>
+                            <input type="text" name="m9_formatos_origen" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Ej: Tablas Postgres, Hojas de Excel, Archivos DBF, XML">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Calidad Percibida de los Datos</label>
+                            <select name="m9_calidad_percibida" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none">
+                                <option value="">Seleccione estimación</option>
+                                <option value="Alta (Muy pocos errores/inconsistencias)">Alta (Datos limpios y normalizados)</option>
+                                <option value="Media (Requiere depuración moderada)">Media (Requiere depuración moderada)</option>
+                                <option value="Baja (Alto grado de inconsistencia)">Baja (Alto grado de inconsistencia)</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Documentación para Migración</label>
+                            <select name="m9_documentacion_migracion" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none">
+                                <option value="">Seleccione opción</option>
+                                <option value="Disponible">Disponible (Diagramas ER / Diccionario)</option>
+                                <option value="Parcial">Parcial</option>
+                                <option value="Nula">Nula (Se requiere ingeniería inversa)</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Dependencias de Software / Librerías</label>
+                            <input type="text" name="m9_dependencia_software" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Versiones específicas de lenguajes, frameworks o plugins legacy">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Capacidad de Exportación</label>
+                            <input type="text" name="m9_capacidad_exportacion" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Herramientas disponibles para la extracción masiva de datos">
+                        </div>
+
+                        <div class="md:col-span-2">
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Restricciones Legales o Técnicas</label>
+                            <textarea name="m9_restricciones_legales" rows="2" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Cláusulas de confidencialidad, propiedad intelectual del código o restricciones de soberanía de datos"></textarea>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Manejo de Datos Históricos</label>
+                            <select name="m9_datos_historicos" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none">
+                                <option value="">Seleccione estrategia</option>
+                                <option value="Migración Total">Migración Total (Todos los años históricos)</option>
+                                <option value="Migración Parcial + Archivo">Migración Parcial (Últimos X años) + Archivo Read-Only</option>
+                                <option value="Solo Datos Activos">Solo Datos Activos/Vigentes</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Necesidad de Limpieza / Depuración previa</label>
+                            <select name="m9_necesidad_limpieza" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none">
+                                <option value="">Seleccione nivel</option>
+                                <option value="Indispensable">Indispensable previo a migrar</option>
+                                <option value="Deseable">Deseable durante el proceso</option>
+                                <option value="No requerida">No requerida</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Responsable de Validación Técnica *</label>
+                            <input type="text" name="m9_responsable_validacion" required class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Nombre y cargo del responsable técnico">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Prioridad Propuesta para Migración *</label>
+                            <select name="m9_prioridad_propuesta" required class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none">
+                                <option value="">Seleccione prioridad</option>
+                                <option value="Alta / Urgente">Alta / Urgente (Fase 1)</option>
+                                <option value="Media">Media (Fase 2)</option>
+                                <option value="Baja">Baja (Fase 3)</option>
+                                <option value="No Prioritario">No Prioritario / Mantener Legacy</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+
+            <!-- Botones de Control del Formulario -->
+            <div class="mt-8 pt-4 border-t border-slate-200 flex items-center justify-between">
+                <button type="button" id="prevBtn" onclick="navigateModule(-1)" class="px-4 py-2 text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-lg transition invisible flex items-center gap-1.5">
+                    <i class="fa-solid fa-arrow-left"></i> Anterior
+                </button>
+
+                <div class="flex gap-2">
+                    <button type="button" id="nextBtn" onclick="navigateModule(1)" class="px-5 py-2 text-xs font-semibold text-white bg-blue-900 hover:bg-slate-800 rounded-lg transition flex items-center gap-1.5 shadow-sm">
+                        Siguiente <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                    <button type="button" id="summaryBtn" onclick="openSummaryModal()" class="px-5 py-2 text-xs font-semibold text-white bg-emerald-700 hover:bg-emerald-800 rounded-lg transition hidden flex items-center gap-1.5 shadow-sm">
+                        <i class="fa-solid fa-clipboard-check"></i> Finalizar y Resumir
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal de Resumen y Previsualización -->
+    <div id="summaryModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] flex flex-col overflow-hidden">
+            <div class="bg-slate-900 text-white px-6 py-4 flex justify-between items-center">
+                <h3 class="text-base font-bold flex items-center gap-2">
+                    <i class="fa-solid fa-file-contract text-blue-400"></i> Resumen del Levantamiento Técnico
+                </h3>
+                <button onclick="closeSummaryModal()" class="text-slate-400 hover:text-white text-lg">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            
+            <div class="p-6 overflow-y-auto custom-scrollbar space-y-6" id="modalContent">
+                <!-- Generado dinámicamente por script.js -->
+            </div>
+
+            <div class="bg-slate-50 border-t border-slate-200 px-6 py-3 flex justify-between items-center">
+                <span class="text-xs text-slate-500">Verifique que toda la información consignada sea verídica.</span>
+                <div class="flex gap-2">
+                    <button onclick="closeSummaryModal()" class="px-4 py-2 text-xs font-semibold text-slate-700 bg-white border border-slate-300 hover:bg-slate-50 rounded-lg">Volver a Editar</button>
+                    <button onclick="exportJSONData()" class="px-4 py-2 text-xs font-semibold text-white bg-blue-900 hover:bg-slate-800 rounded-lg">Descargar Ficha (JSON)</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Archivo JS Independiente -->
+    <script src="script.js"></script>
+</body>
+</html>
