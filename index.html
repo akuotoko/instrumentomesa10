@@ -22,7 +22,7 @@
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
+                        sans: ['Source Sans 3', 'sans-serif'],
                     },
                     colors: {
                         navy: {
@@ -43,22 +43,22 @@
     </script>
     <!-- Iconos y Fuentes -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Archivo CSS Independiente -->
     <link rel="stylesheet" href="styles.css">
 </head>
-<body class="h-full font-sans text-slate-800 antialiased flex flex-col">
+<body class="app-shell h-full font-sans text-slate-800 antialiased flex flex-col">
 
     <!-- Header Institucional -->
-    <header class="bg-slate-900 text-white border-b border-slate-700 sticky top-0 z-30 shadow-md">
+    <header class="institutional-header bg-slate-900 text-white border-b border-slate-700 sticky top-0 z-30 shadow-md">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex justify-between items-center">
             <div class="flex items-center space-x-3">
-                <div class="bg-blue-600 text-white p-2 rounded-lg">
-                    <i class="fa-solid me-0 fa-server text-xl"></i>
+                <div class="brand-mark bg-blue-600 text-white p-2 rounded-lg">
+                    <i class="fa-solid fa-building-columns text-xl"></i>
                 </div>
                 <div>
-                    <h1 class="text-lg font-bold leading-tight">Diagnostico y Caracterización de los Procesos de Control de Estudios, Tecnologías e Infraestructura</h1>
+                    <h1 class="text-lg font-bold leading-tight">Diagnostico preliminar de Procesos de Control de Estudios, Docencia, Investigación y Extensión, Administrativos, y Tecnologías e Infraestructura</h1>
                     <p class="text-xs text-slate-400">Levantamiento de Información Técnica e Institucional</p>
                     <p class="text-xs text-slate-400">Documento base, es un borrador y aún no esta finalizado</p>
                 </div>
@@ -81,11 +81,11 @@
     </header>
 
     <!-- Contenido Principal -->
-    <div class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col md:flex-row gap-6">
+    <div class="app-layout flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col md:flex-row gap-6">
 
         <!-- Sidebar / Navegación por Módulos -->
-        <aside class="w-full md:w-80 shrink-0">
-            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 sticky top-20">
+        <aside class="app-sidebar w-full md:w-80 shrink-0">
+            <div class="module-rail-card bg-white rounded-xl shadow-sm border border-slate-200 p-4 sticky top-20">
                 <div class="flex items-center justify-between mb-4 pb-2 border-b border-slate-100">
                     <h2 class="text-xs font-bold uppercase tracking-wider text-slate-500">Módulos del Formulario</h2>
                     <span id="progressText" class="text-xs font-semibold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full">1 de 9</span>
@@ -175,7 +175,7 @@
         </aside>
 
         <!-- Formulario - Contenido Dinámico -->
-        <main class="flex-1 bg-white rounded-xl shadow-sm border border-slate-200 p-6 flex flex-col justify-between">
+        <main class="form-canvas flex-1 bg-white rounded-xl shadow-sm border border-slate-200 p-6 flex flex-col justify-between">
             <form id="caracterizacionForm" onsubmit="return false;" class="space-y-6">
 
                 <!-- MÓDULO I -->
@@ -192,6 +192,11 @@
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">IEU (Institución de Educación Universitaria) *</label>
                             <input type="text" name="m1_ieu" required class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Nombre completo de la IEU">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">RIF de la IEU</label>
+                            <input type="text" name="m1_rif" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Ej.: J-12345678-9">
                         </div>
 
                         <div>
@@ -239,7 +244,7 @@
                         <div class="md:col-span-2">
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Tipo de Institución de Educación Universitaria (IEU): *</label>
 
-                            <select name="m1_tipo_ieu" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none">
+                            <select name="m1_tipo_ieu" id="m1_tipo_ieu_select" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none">
                                 <option value="">Seleccione una opción</option>
                                 <option value="EX">Universidad Experimental</option>
                                 <option value="NEX">Universidad No Experimental</option>
@@ -249,6 +254,11 @@
                                 <option value="CU">Colegio Universitario</option>
                                 <option value="Otro">Otro</option>
                             </select>
+                        </div>
+
+                        <div id="m1_tipo_ieu_otro_wrapper" class="md:col-span-2 hidden">
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Especifique el tipo de IEU *</label>
+                            <input type="text" name="m1_tipo_ieu_otro" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Indique el tipo de institución">
                         </div>
 
                         <div class="md:col-span-2">
@@ -264,7 +274,7 @@
                         <div class="md:col-span-2">
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Tipo de Sede: *</label>
 
-                            <select name="m1_tipo_sede" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none">
+                            <select name="m1_tipo_sede" id="m1_tipo_sede_select" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none">
                                 <option value="">Seleccione una opción</option>
                                 <option value="PPAL">Sede Principal</option>
                                 <option value="RG">Sede Regional</option>
@@ -274,6 +284,33 @@
                                 <option value="Otro">Otro</option>
                             </select>
                         </div>
+
+                        <div id="m1_tipo_sede_otro_wrapper" class="md:col-span-2 hidden">
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Especifique el tipo de sede *</label>
+                            <input type="text" name="m1_tipo_sede_otro" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Describa el tipo de sede">
+                        </div>
+
+                        <fieldset class="md:col-span-2 border border-slate-200 rounded-lg p-4 space-y-4">
+                            <legend class="text-xs font-semibold text-slate-700 px-1">¿Qué niveles otorga la IEU? *</legend>
+                            <p class="text-xs text-slate-500">Puede seleccionar varias opciones. Debe elegir al menos una.</p>
+
+                            <div class="space-y-3">
+                                <label class="flex items-start gap-3 rounded-lg border border-slate-200 bg-slate-50 p-3 cursor-pointer">
+                                    <input type="checkbox" name="m1_nivel" value="intermedio" class="mt-1 w-4 h-4 rounded border-slate-300 text-blue-900 focus:ring-blue-800">
+                                    <span class="text-sm font-medium text-slate-800">Intermedio (Asistente Administrativo, TSU, Otros)</span>
+                                </label>
+
+                                <label class="flex items-start gap-3 rounded-lg border border-slate-200 bg-slate-50 p-3 cursor-pointer">
+                                    <input type="checkbox" name="m1_nivel" value="pregrado" class="mt-1 w-4 h-4 rounded border-slate-300 text-blue-900 focus:ring-blue-800">
+                                    <span class="text-sm font-medium text-slate-800">Pregrado (Carrera, PNF, PFG, Otros)</span>
+                                </label>
+
+                                <label class="flex items-start gap-3 rounded-lg border border-slate-200 bg-slate-50 p-3 cursor-pointer">
+                                    <input type="checkbox" name="m1_nivel" value="postgrado" class="mt-1 w-4 h-4 rounded border-slate-300 text-blue-900 focus:ring-blue-800">
+                                    <span class="text-sm font-medium text-slate-800">Postgrado (Especialización, Maestría, Doctorado, Otros)</span>
+                                </label>
+                            </div>
+                        </fieldset>
                             
                         <div class="md:col-span-2">
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Fuente de los Datos</label>
@@ -324,14 +361,87 @@
                             <input type="text" name="m2_unidades_otro_1" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Indique la denominación de la unidad responsable">
                         </div>
 
-                        <div class="md:col-span-2">
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Puntos de Captura y Validación</label>
-                            <textarea name="m2_puntos_captura" rows="2" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Especifique dónde y quién realiza la captura primaria de datos e ingresa las validaciones"></textarea>
-                        </div>
+                        <fieldset class="md:col-span-2 border border-slate-200 rounded-lg p-4 space-y-4">
+                            <legend class="text-xs font-semibold text-slate-700 px-1">Matrícula actual y promedio de estudiantes</legend>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-700 mb-1">Número de matrícula actual de pregrado (cantidad de estudiantes activos)</label>
+                                    <input type="number" name="m2_matricula_actual_pregrado" min="0" step="1" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-700 mb-1">Número de matrícula actual de postgrado (cantidad de estudiantes activos)</label>
+                                    <input type="number" name="m2_matricula_actual_postgrado" min="0" step="1" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-700 mb-1">Número de matrícula actual de doctorado (cantidad de estudiantes activos)</label>
+                                    <input type="number" name="m2_matricula_actual_doctorado" min="0" step="1" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-700 mb-1">Promedio de estudiantes por carrera para pregrado</label>
+                                    <input type="number" name="m2_promedio_estudiantes_pregrado" min="0" step="any" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-700 mb-1">Promedio de estudiantes por carrera para especialización/maestría</label>
+                                    <input type="number" name="m2_promedio_estudiantes_especializacion_maestria" min="0" step="any" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-700 mb-1">Promedio de estudiantes por carrera para doctorado</label>
+                                    <input type="number" name="m2_promedio_estudiantes_doctorado" min="0" step="any" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none">
+                                </div>
+                            </div>
+                        </fieldset>
                     </div>
 
                     <!-- Seccion II.II -->
-                    <label class="block text-xs font-semibold text-slate-700 mb-1">II.II - Proceso de Inscripción (Registro e inscripción por periodo académico)</label> 
+                    <fieldset id="m2_servicios_estudiantiles_fieldset" class="border border-slate-200 rounded-lg p-4 space-y-4">
+                        <legend class="text-xs font-semibold text-slate-700 px-1">II.II Señale qué servicios estudiantiles ofrece la institución</legend>
+                        <p class="text-xs text-slate-500">Puede seleccionar varios servicios.</p>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <label class="flex items-center gap-3 rounded-lg border border-slate-200 bg-white p-3 cursor-pointer">
+                                <input type="checkbox" name="m2_servicios_estudiantiles" value="Becas" class="w-4 h-4 shrink-0 rounded border-slate-300 text-blue-900 focus:ring-blue-800">
+                                <span class="text-sm font-medium text-slate-800">Becas</span>
+                            </label>
+
+                            <label class="flex items-center gap-3 rounded-lg border border-slate-200 bg-white p-3 cursor-pointer">
+                                <input type="checkbox" name="m2_servicios_estudiantiles" value="Comedor" class="w-4 h-4 shrink-0 rounded border-slate-300 text-blue-900 focus:ring-blue-800">
+                                <span class="text-sm font-medium text-slate-800">Comedor</span>
+                            </label>
+
+                            <label class="flex items-center gap-3 rounded-lg border border-slate-200 bg-white p-3 cursor-pointer">
+                                <input type="checkbox" name="m2_servicios_estudiantiles" value="Transporte" class="w-4 h-4 shrink-0 rounded border-slate-300 text-blue-900 focus:ring-blue-800">
+                                <span class="text-sm font-medium text-slate-800">Transporte</span>
+                            </label>
+
+                            <label class="flex items-center gap-3 rounded-lg border border-slate-200 bg-white p-3 cursor-pointer">
+                                <input type="checkbox" name="m2_servicios_estudiantiles" value="Residencia" class="w-4 h-4 shrink-0 rounded border-slate-300 text-blue-900 focus:ring-blue-800">
+                                <span class="text-sm font-medium text-slate-800">Residencia</span>
+                            </label>
+
+                            <label class="flex items-center gap-3 rounded-lg border border-slate-200 bg-white p-3 cursor-pointer">
+                                <input type="checkbox" name="m2_servicios_estudiantiles" value="Servicios médicos" class="w-4 h-4 shrink-0 rounded border-slate-300 text-blue-900 focus:ring-blue-800">
+                                <span class="text-sm font-medium text-slate-800">Servicios médicos</span>
+                            </label>
+
+                            <label class="flex items-center gap-3 rounded-lg border border-slate-200 bg-white p-3 cursor-pointer">
+                                <input type="checkbox" name="m2_servicios_estudiantiles" value="Servicio de orientación" class="w-4 h-4 shrink-0 rounded border-slate-300 text-blue-900 focus:ring-blue-800">
+                                <span class="text-sm font-medium text-slate-800">Servicio de orientación</span>
+                            </label>
+
+                            <label class="flex items-center gap-3 rounded-lg border border-slate-200 bg-white p-3 cursor-pointer">
+                                <input type="checkbox" name="m2_servicios_estudiantiles" value="Otros" class="w-4 h-4 shrink-0 rounded border-slate-300 text-blue-900 focus:ring-blue-800">
+                                <span class="text-sm font-medium text-slate-800">Otros (especifique)</span>
+                            </label>
+                        </div>
+
+                        <div id="m2_servicios_estudiantiles_otros_wrapper" class="hidden">
+                            <label for="m2_servicios_estudiantiles_otros" class="block text-xs font-semibold text-slate-700 mb-1">Especifique otros servicios</label>
+                            <input type="text" id="m2_servicios_estudiantiles_otros" name="m2_servicios_estudiantiles_otros" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Indique otros servicios estudiantiles">
+                        </div>
+                    </fieldset>
+
+                    <!-- Seccion II.III -->
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">II.III - Proceso de Inscripción (Registro e inscripción por periodo académico)</label> 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Unidades Responsables</label>
@@ -359,15 +469,10 @@
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Indique su denominación</label>
                             <input type="text" name="m2_unidades_otro_2" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Indique la denominación de la unidad responsable">
                         </div>
-
-                        <div class="md:col-span-2">
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Puntos de Captura y Validación</label>
-                            <textarea name="m2_puntos_captura" rows="2" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Especifique dónde y quién realiza la captura primaria de datos e ingresa las validaciones"></textarea>
-                        </div>
                     </div>
 
-                    <!-- Seccion II.III -->
-                    <label class="block text-xs font-semibold text-slate-700 mb-1">II.III - Prosecusión (Seguimiento a la trayectoria académica del estudiante)</label> 
+                    <!-- Seccion II.IV -->
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">II.IV - Prosecusión (Seguimiento a la trayectoria académica del estudiante)</label> 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Unidades Responsables</label>
@@ -382,7 +487,7 @@
 
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Grado de Digitalización</label>
-                            <select name="m2_grado_digitalizacion" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none">
+                            <select name="m2_grado_digitalizacion" id="m2_grado_digitalizacion_3_select" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none">
                                 <option value="">Seleccione una opción</option>
                                 <option value="Total">Total (100% Digital / Sin papel)</option>
                                 <option value="Parcial Alto">Parcial Alto (Principalmente digital con soporte físico)</option>
@@ -391,19 +496,23 @@
                             </select>
                         </div>
 
+                        <div id="m2_alertas_prelaciones_wrapper" class="md:col-span-2 hidden">
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">¿Se generan alertas de prelaciones y otros controles necesarios según reglamento?</label>
+                            <select name="m2_alertas_prelaciones" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none">
+                                <option value="">Seleccione una opción</option>
+                                <option value="Sí">Sí</option>
+                                <option value="No">No</option>
+                            </select>
+                        </div>
+
                         <div id="m2_unidades_otro_3_wrapper" class="md:col-span-2 hidden">
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Indique su denominación</label>
                             <input type="text" name="m2_unidades_otro_3" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Indique la denominación de la unidad responsable">
                         </div>
-
-                        <div class="md:col-span-2">
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Puntos de Captura y Validación</label>
-                            <textarea name="m2_puntos_captura" rows="2" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Especifique dónde y quién realiza la captura primaria de datos e ingresa las validaciones"></textarea>
-                        </div>
                     </div>
 
-                    <!-- Seccion II.IV -->
-                    <label class="block text-xs font-semibold text-slate-700 mb-1">II.IV - Carga y Validación de Notas (Por parte del docente)</label> 
+                    <!-- Seccion II.V -->
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">II.V - Carga y Validación de Notas (Por parte del docente)</label> 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Unidades Responsables</label>
@@ -431,15 +540,10 @@
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Indique su denominación</label>
                             <input type="text" name="m2_unidades_otro_4" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Indique la denominación de la unidad responsable">
                         </div>
-
-                        <div class="md:col-span-2">
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Puntos de Captura y Validación</label>
-                            <textarea name="m2_puntos_captura" rows="2" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Especifique dónde y quién realiza la captura primaria de datos e ingresa las validaciones"></textarea>
-                        </div>
                     </div>
 
-                    <!-- Seccion II.V -->
-                    <label class="block text-xs font-semibold text-slate-700 mb-1">II.V - Planificación Académica (Oferta académica, Cuadratura)</label> 
+                    <!-- Seccion II.VI -->
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">II.VI - Planificación Académica (Oferta académica, Cuadratura)</label> 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Unidades Responsables</label>
@@ -454,7 +558,7 @@
 
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Grado de Digitalización</label>
-                            <select name="m2_grado_digitalizacion" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none">
+                            <select name="m2_grado_digitalizacion" id="m2_grado_digitalizacion_5_select" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none">
                                 <option value="">Seleccione una opción</option>
                                 <option value="Total">Total (100% Digital / Sin papel)</option>
                                 <option value="Parcial Alto">Parcial Alto (Principalmente digital con soporte físico)</option>
@@ -463,19 +567,23 @@
                             </select>
                         </div>
 
+                        <div id="m2_reporte_planificacion_wrapper" class="md:col-span-2 hidden">
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">¿Se genera un reporte para el seguimiento correspondiente?</label>
+                            <select name="m2_reporte_planificacion" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none">
+                                <option value="">Seleccione una opción</option>
+                                <option value="Sí">Sí</option>
+                                <option value="No">No</option>
+                            </select>
+                        </div>
+
                         <div id="m2_unidades_otro_5_wrapper" class="md:col-span-2 hidden">
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Indique su denominación</label>
                             <input type="text" name="m2_unidades_otro_5" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Indique la denominación de la unidad responsable">
                         </div>
-
-                        <div class="md:col-span-2">
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Puntos de Captura y Validación</label>
-                            <textarea name="m2_puntos_captura" rows="2" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Especifique dónde y quién realiza la captura primaria de datos e ingresa las validaciones"></textarea>
-                        </div>
                     </div>
 
-                    <!-- Seccion II.VI -->
-                    <label class="block text-xs font-semibold text-slate-700 mb-1">II.VI - Registros de Egresados (Libro de Acta de Grado)</label> 
+                    <!-- Seccion II.VII -->
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">II.VII - Registros de Egresados (Libro de Acta de Grado)</label> 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Unidades Responsables</label>
@@ -503,15 +611,10 @@
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Indique su denominación</label>
                             <input type="text" name="m2_unidades_otro_6" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Indique la denominación de la unidad responsable">
                         </div>
-
-                        <div class="md:col-span-2">
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Puntos de Captura y Validación</label>
-                            <textarea name="m2_puntos_captura" rows="2" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Especifique dónde y quién realiza la captura primaria de datos e ingresa las validaciones"></textarea>
-                        </div>
                     </div>
 
-                    <!-- Seccion II.VII -->
-                    <label class="block text-xs font-semibold text-slate-700 mb-1">II.VII - Emisión de Constancias y Certificaciones</label> 
+                    <!-- Seccion II.VIII -->
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">II.VIII - Emisión de Constancias y Certificaciones</label> 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Unidades Responsables</label>
@@ -541,10 +644,161 @@
                         </div>
 
                         <div class="md:col-span-2">
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Puntos de Captura y Validación</label>
-                            <textarea name="m2_puntos_captura" rows="2" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Especifique dónde y quién realiza la captura primaria de datos e ingresa las validaciones"></textarea>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">¿Cuentan con Acreditación y Certificación de Aprendizajes y Saberes por Experiencias (ACASE)?</label>
+                            <select name="m2_acase" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none">
+                                <option value="">Seleccione una opción</option>
+                                <option value="Sí">Sí</option>
+                                <option value="No">No</option>
+                            </select>
                         </div>
+
+                        <fieldset id="m2_documentos_constancias_fieldset" class="md:col-span-2 border border-slate-200 rounded-lg p-4 space-y-4">
+                            <legend class="text-xs font-semibold text-slate-700 px-1">Indique qué documentos usualmente se emiten como constancia o certificación *</legend>
+                            <p class="text-xs text-slate-500">Seleccione uno o varios documentos.</p>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <label class="flex items-center gap-3 rounded-lg border border-slate-200 bg-white p-3 cursor-pointer">
+                                    <input type="checkbox" name="m2_documentos_constancias" value="Notas" class="w-4 h-4 shrink-0 rounded border-slate-300 text-blue-900 focus:ring-blue-800">
+                                    <span class="text-sm font-medium text-slate-800">Notas</span>
+                                </label>
+
+                                <label class="flex items-center gap-3 rounded-lg border border-slate-200 bg-white p-3 cursor-pointer">
+                                    <input type="checkbox" name="m2_documentos_constancias" value="Títulos" class="w-4 h-4 shrink-0 rounded border-slate-300 text-blue-900 focus:ring-blue-800">
+                                    <span class="text-sm font-medium text-slate-800">Títulos</span>
+                                </label>
+
+                                <label class="flex items-center gap-3 rounded-lg border border-slate-200 bg-white p-3 cursor-pointer">
+                                    <input type="checkbox" name="m2_documentos_constancias" value="Pensum" class="w-4 h-4 shrink-0 rounded border-slate-300 text-blue-900 focus:ring-blue-800">
+                                    <span class="text-sm font-medium text-slate-800">Pensum</span>
+                                </label>
+
+                                <label class="flex items-center gap-3 rounded-lg border border-slate-200 bg-white p-3 cursor-pointer">
+                                    <input type="checkbox" name="m2_documentos_constancias" value="Constancia de estudios" class="w-4 h-4 shrink-0 rounded border-slate-300 text-blue-900 focus:ring-blue-800">
+                                    <span class="text-sm font-medium text-slate-800">Constancia de estudios</span>
+                                </label>
+
+                                <label class="flex items-center gap-3 rounded-lg border border-slate-200 bg-white p-3 cursor-pointer">
+                                    <input type="checkbox" name="m2_documentos_constancias" value="Constancia de finalización de estudios" class="w-4 h-4 shrink-0 rounded border-slate-300 text-blue-900 focus:ring-blue-800">
+                                    <span class="text-sm font-medium text-slate-800">Constancia de finalización de estudios</span>
+                                </label>
+
+                                <label class="flex items-center gap-3 rounded-lg border border-slate-200 bg-white p-3 cursor-pointer">
+                                    <input type="checkbox" name="m2_documentos_constancias" value="Otros" class="w-4 h-4 shrink-0 rounded border-slate-300 text-blue-900 focus:ring-blue-800">
+                                    <span class="text-sm font-medium text-slate-800">Otros (especifique)</span>
+                                </label>
+                            </div>
+
+                            <div id="m2_documentos_constancias_otro_wrapper" class="hidden">
+                                <label for="m2_documentos_constancias_otro" class="block text-xs font-semibold text-slate-700 mb-1">Especifique el tipo de documento</label>
+                                <input type="text" id="m2_documentos_constancias_otro" name="m2_documentos_constancias_otro" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Indique el otro documento">
+                            </div>
+                        </fieldset>
                     </div>
+
+                    <fieldset class="period-distribution space-y-4">
+                        <legend class="period-heading">Distribución de los períodos académicos</legend>
+                        <p class="text-sm text-slate-600">Seleccione una o varias opciones, según los regímenes que convivan en la institución.</p>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+                            <label class="period-option">
+                                <input type="checkbox" name="m2_periodos_academicos" value="trimestrales" class="w-4 h-4 shrink-0 rounded border-slate-300 text-blue-900 focus:ring-blue-800">
+                                <span>Trimestrales</span>
+                            </label>
+
+                            <label class="period-option">
+                                <input type="checkbox" name="m2_periodos_academicos" value="semestrales" class="w-4 h-4 shrink-0 rounded border-slate-300 text-blue-900 focus:ring-blue-800">
+                                <span>Semestrales</span>
+                            </label>
+
+                            <label class="period-option">
+                                <input type="checkbox" name="m2_periodos_academicos" value="anuales" class="w-4 h-4 shrink-0 rounded border-slate-300 text-blue-900 focus:ring-blue-800">
+                                <span>Anuales</span>
+                            </label>
+
+                            <label class="period-option">
+                                <input type="checkbox" name="m2_periodos_academicos" value="tramos" class="w-4 h-4 shrink-0 rounded border-slate-300 text-blue-900 focus:ring-blue-800">
+                                <span>Tramos</span>
+                            </label>
+
+                            <label class="period-option">
+                                <input type="checkbox" name="m2_periodos_academicos" value="trayectos" class="w-4 h-4 shrink-0 rounded border-slate-300 text-blue-900 focus:ring-blue-800">
+                                <span>Trayectos</span>
+                            </label>
+
+                            <label class="period-option">
+                                <input type="checkbox" name="m2_periodos_academicos" value="otros" class="w-4 h-4 shrink-0 rounded border-slate-300 text-blue-900 focus:ring-blue-800">
+                                <span>Otros</span>
+                            </label>
+                        </div>
+
+                        <div id="m2_periodos_academicos_otro_wrapper" class="period-other-field hidden">
+                            <label for="m2_periodos_academicos_otro" class="block text-xs font-semibold text-slate-700 mb-1">Especifique otros períodos académicos</label>
+                            <input type="text" id="m2_periodos_academicos_otro" name="m2_periodos_academicos_otro" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-md focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Describa el régimen académico">
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="border border-slate-200 rounded-lg p-4 space-y-5">
+                        <legend class="text-sm font-semibold text-slate-800 px-1">II.IX: Proyectos de Investigación Básica y Aplicada</legend>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">¿Cuántas líneas de investigación en curso tiene la institución?</label>
+                            <input type="number" name="m2_lineas_investigacion_en_curso" min="0" step="1" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none">
+                        </div>
+
+                        <div class="space-y-3">
+                            <h3 class="text-xs font-semibold text-slate-700">Proyectos de investigación básica o de aplicación no inmediata</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-700 mb-1">Cantidad de proyectos</label>
+                                    <input type="number" name="m2_proyectos_investigacion_basica_total" min="0" step="1" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-700 mb-1">Proyectos que reciben financiamiento</label>
+                                    <input type="number" name="m2_proyectos_investigacion_basica_financiados" min="0" step="1" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-700 mb-1">Proyectos que generan ingresos propios</label>
+                                    <input type="number" name="m2_proyectos_investigacion_basica_ingresos_propios" min="0" step="1" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="space-y-3">
+                            <h3 class="text-xs font-semibold text-slate-700">Proyectos de investigación aplicada a territorios, comunidades u otras instancias</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-700 mb-1">Cantidad de proyectos</label>
+                                    <input type="number" name="m2_proyectos_investigacion_aplicada_total" min="0" step="1" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-700 mb-1">Proyectos que reciben financiamiento</label>
+                                    <input type="number" name="m2_proyectos_investigacion_aplicada_financiados" min="0" step="1" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-700 mb-1">Proyectos que generan ingresos propios</label>
+                                    <input type="number" name="m2_proyectos_investigacion_aplicada_ingresos_propios" min="0" step="1" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none">
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="border border-slate-200 rounded-lg p-4 space-y-4">
+                        <legend class="text-sm font-semibold text-slate-800 px-1">II.X: Proyectos de Extensión (Relacionamiento con las comunidades)</legend>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">Cantidad de proyectos de extensión</label>
+                                <input type="number" name="m2_proyectos_extension_total" min="0" step="1" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">Proyectos que reciben financiamiento</label>
+                                <input type="number" name="m2_proyectos_extension_financiados" min="0" step="1" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">Proyectos que generan ingresos propios</label>
+                                <input type="number" name="m2_proyectos_extension_ingresos_propios" min="0" step="1" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none">
+                            </div>
+                        </div>
+                    </fieldset>
                 </div>
 
                 <!-- MÓDULO III -->
@@ -613,6 +867,60 @@
                             <input type="text" name="m3_restricciones_acceso" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Niveles de confidencialidad y restricciones normativas aplicables">
                         </div>
                     </div>
+
+                    <fieldset class="md:col-span-2 border border-slate-200 rounded-lg p-4 space-y-4">
+                        <legend class="text-xs font-semibold text-slate-700 px-1">¿Tienen formas de autogestión (financiamiento)?</legend>
+                        <p class="text-xs text-slate-500">Puede seleccionar varias opciones o dejar la respuesta vacía.</p>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <label class="flex items-center gap-3 rounded-lg border border-slate-200 bg-white p-3 cursor-pointer">
+                                <input type="checkbox" name="m3_formas_autogestion" value="Ingresos Propios" class="w-4 h-4 shrink-0 rounded border-slate-300 text-blue-900 focus:ring-blue-800">
+                                <span class="text-sm font-medium text-slate-800">Ingresos Propios</span>
+                            </label>
+
+                            <label class="flex items-center gap-3 rounded-lg border border-slate-200 bg-white p-3 cursor-pointer">
+                                <input type="checkbox" name="m3_formas_autogestion" value="Empresas Universitarias" class="w-4 h-4 shrink-0 rounded border-slate-300 text-blue-900 focus:ring-blue-800">
+                                <span class="text-sm font-medium text-slate-800">Empresas Universitarias</span>
+                            </label>
+
+                            <label class="flex items-center gap-3 rounded-lg border border-slate-200 bg-white p-3 cursor-pointer">
+                                <input type="checkbox" name="m3_formas_autogestion" value="Fundaciones" class="w-4 h-4 shrink-0 rounded border-slate-300 text-blue-900 focus:ring-blue-800">
+                                <span class="text-sm font-medium text-slate-800">Fundaciones</span>
+                            </label>
+
+                            <label class="flex items-center gap-3 rounded-lg border border-slate-200 bg-white p-3 cursor-pointer">
+                                <input type="checkbox" name="m3_formas_autogestion" value="Otras" class="w-4 h-4 shrink-0 rounded border-slate-300 text-blue-900 focus:ring-blue-800">
+                                <span class="text-sm font-medium text-slate-800">Otras</span>
+                            </label>
+                        </div>
+
+                        <div id="m3_formas_autogestion_otras_wrapper" class="hidden">
+                            <label for="m3_formas_autogestion_otras" class="block text-xs font-semibold text-slate-700 mb-1">Describa cuáles</label>
+                            <textarea id="m3_formas_autogestion_otras" name="m3_formas_autogestion_otras" rows="2" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none" placeholder="Describa otras formas de autogestión"></textarea>
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="border border-slate-200 rounded-lg p-4 space-y-4">
+                        <legend class="text-xs font-semibold text-slate-700 px-1">Respecto al talento humano, indique lo siguiente:</legend>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">Número de Profesores a dedicación exclusiva/tiempo completo</label>
+                                <input type="number" name="m3_numero_profesores_dedicacion_exclusiva_tiempo_completo" min="0" step="1" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">Número de Profesores a dedicación parcial</label>
+                                <input type="number" name="m3_numero_profesores_dedicacion_parcial" min="0" step="1" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">Número de empleados administrativos</label>
+                                <input type="number" name="m3_numero_empleados_administrativos" min="0" step="1" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">Número de obreros</label>
+                                <input type="number" name="m3_numero_obreros" min="0" step="1" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:border-blue-800 outline-none">
+                            </div>
+                        </div>
+                    </fieldset>
                 </div>
 
                 <!-- MÓDULO IV -->
